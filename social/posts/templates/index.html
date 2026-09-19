@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static "index.css" %}">
+    <style>
+        .img1 {
+            width: 32px;
+            cursor: pointer;
+        }
+        #div1 {
+            background-color: blue;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            gap: 30px;
+            width: 50%;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>All post</h1>
+
+    {% for post in all_post %}
+        <div id='div1'>
+            <h2>Username: {{ post.user }}</h2>
+            <p>Description: {{ post.description }}</p>
+            {% if current_user in post.likes.all %}
+                <div>
+                    <a href="{% url "likes" post.id %}"><img src="{% static "heart2.png" %}" class='img1'></a>
+                    <p>{{ post.likes.count }}</p>
+                </div>
+            {% else %}
+                <div>
+                    <a href="{% url "likes" post.id %}"><img src="{% static "heart.png" %}" class='img1'></a>
+                    <p>{{ post.likes.count }}</p>
+                </div>
+            {% endif %}
+            {% if current_user == post.user %}
+                <a href="{% url "delete_post" post.id %}"><button id='btn2'>Delete</button></a>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <a href="{% url "add_post" %}"><button id='btn1'>Add</button></a>
+</body>
+</html>

@@ -1,0 +1,41 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+div h2,p {
+    text-align: center;
+}
+#btn1 {
+    border: none;
+    color: white;
+    background-color: blue;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#btn2 {
+    border: none;
+    color: white;
+    background-color: red;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#img1 {
+    width: 32px;
+    
+}

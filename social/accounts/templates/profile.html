@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static "profile.css" %}">
+    <style>
+        #btn {
+            border: none;
+            color: white;
+            background-color: blue;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Current User</h1>
+        <h1>Username: {{ current_user.username }}</h1>
+        <p>Age: {{ current_user.age }}</p>
+        <p>Email: {{ current_user.email }}</p>
+        <p>Password: {{ current_user.password }}</p>
+
+        <a href="{% url "profile_edit" %}"><button id='btn'>Edit</button></a>
+    </div>
+</body>
+</html>
