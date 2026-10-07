@@ -11,6 +11,10 @@ def profile(req):
         context = {
             'current_user': None
         }
+    if req.method == 'POST':
+        current_user = User.objects.get(is_current_user=True)
+        current_user.profile_picture = req.FILES.get('img')
+        current_user.save()
     return render(req, 'profile.html', context)
 
 def user_details(req, id):
@@ -21,13 +25,21 @@ def user_details(req, id):
 
 def register_user(req):
     if req.method == 'POST':
-        username = req.POST.get('username')
-        age = req.POST.get('age')
-        email = req.POST.get('email')
-        password = req.POST.get('password')
+        # username = req.POST.get('username')
+        # age = req.POST.get('age')
+        # email = req.POST.get('email')
+        # password = req.POST.get('password')
 
-        new_user = User(username=username, age=age,email=email, password=password, is_current_user=False)
-        new_user.save()
+        # new_user = User(username=username, age=age,email=email, password=password, is_current_user=False)
+        # new_user.save()
+        form = RegisterForm(req.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+        else:
+            return render(req, 'register.html', {
+                'register_form': form
+            })
     context = {
         'register_form': RegisterForm()
     }

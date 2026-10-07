@@ -6,7 +6,8 @@ class User(models.Model):
     age = models.IntegerField()
     email = models.EmailField()
     password = models.CharField()
-    is_current_user = models.BooleanField()
+    is_current_user = models.BooleanField(default=False)
+    profile_picture = models.ImageField(upload_to='profile/', default='')
 
     def __str__(self):
         return self.username
