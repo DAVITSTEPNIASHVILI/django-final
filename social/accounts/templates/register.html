@@ -28,7 +28,7 @@
     <div>
         <h1>Register Page</h1>
 
-        <form method='POST'>
+        <form method='POST' enctype='multipart/form-data'>
             {% csrf_token %}
 
             {{ register_form.as_p }}

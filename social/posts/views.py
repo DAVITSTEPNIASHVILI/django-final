@@ -6,18 +6,23 @@ from .forms import AddPost
 def all_posts(req):
     context = {
         'all_post': Post.objects.all(),
-        'current_user': User.objects.get(is_current_user = True),
         'all_user': User.objects.all()
     }
+
     return render(req, 'index.html', context)
 
 def add_post(req):
     if req.method == 'POST':
-        description = req.POST.get('description')
-        current_user = User.objects.get(is_current_user=True)
-        new_post = Post(user=current_user, description=description, picture=req.FILES.get('picture'))
-        new_post.save()
-        return redirect('all_post')
+        form = AddPost(req.POST, req.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = req.user
+            post.save()
+            return redirect('all_post')
+        else:
+            return render(req, 'add_post.html', {
+                'add_form': form
+            })
     context = {
         'add_form': AddPost()
     }
@@ -30,7 +35,7 @@ def delete_post(req, id):
 
 def likes(req, id):
     post = Post.objects.get(id=id)
-    current_user = User.objects.get(is_current_user = True)
+    current_user = req.user
     if post.likes.filter(id=current_user.id).exists():
         post.likes.remove(current_user)
     else:
@@ -39,7 +44,7 @@ def likes(req, id):
 
 def comment(req, id):
     post = Post.objects.get(id=id)
-    current_user = User.objects.get(is_current_user=True)
+    current_user = req.user
 
     if req.method == 'POST':
         comment_text = req.POST.get('comment')
@@ -48,8 +53,7 @@ def comment(req, id):
 
     context = {
         'all_post': Post.objects.all(),
-        'current_user': current_user,
         'comment': Comment.objects.filter(post=post),
-        'comment_post': post,
+        'comment_post': post
     }
     return render(req, 'index.html', context)

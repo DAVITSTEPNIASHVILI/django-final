@@ -10,7 +10,7 @@
         /* Header & Navigation Styles */
         .navbar {
             width: 100%;
-            max-width: 600px;
+            max-width: 700px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -25,7 +25,7 @@
         .auth-buttons {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 5px;
         }
 
         .nav-btn {
@@ -244,15 +244,18 @@
         <div class="auth-buttons">
             <a href="{% url "login" %}"><button class="nav-btn">Login</button></a>
             <a href="{% url "register" %}"><button class="nav-btn">Register</button></a>
-            <a href="{% url "add_post" %}"><button class="create-post-btn">+ Create Post</button></a>
+            {% if user %}
+                <a href="{% url "add_post" %}"><button class="create-post-btn">+ Create Post</button></a>
+                <a href="{% url "global_chat" %}"><button class="nav-btn">Global Chat</button></a>
+            {% endif %}
         </div>
 
-        {% if current_user %}
+        {% if user %}
             <a href="{% url "profile" %}" class="profile-block">
-                {% if current_user.profile_picture %}
-                    <img src="{{ current_user.profile_picture.url }}" alt="Profile">
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="Profile">
                 {% endif %}
-                <span>{{ current_user.username }}</span>
+                <span>{{ user.username }}</span>
             </a>
         {% endif %}
     </div>
@@ -269,7 +272,7 @@
             {% if post.picture %}
                 <img src="{{ post.picture.url }}" class='imgs'>
             {% endif %}
-            {% if current_user in post.likes.all %}
+            {% if user in post.likes.all %}
                 <div>
                     <a href="{% url "likes" post.id %}"><img src="{% static "heart2.png" %}" class='img1'></a>
                     <p>{{ post.likes.count }}</p>
@@ -298,11 +301,10 @@
                     <input type="submit" id="submit-btn">
                 </form>
             {% endif %}
-            {% if current_user == post.user %}
+            {% if user == post.user %}
                 <a href="{% url "delete_post" post.id %}"><button id='btn2'>Delete</button></a>
             {% endif %}
         </div>
     {% endfor %}
-
 </body>
 </html>
